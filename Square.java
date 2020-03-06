@@ -3,32 +3,47 @@ import javax.swing.*;
 public class Square
 {
     private int x, y;
-    ImageIcon image;
-    private boolean greenFrog = false;
-    private boolean redFrog = false;
-    private boolean pad = false;
-    private boolean water = false;
-    public Square(int x, int y)
+    private static ImageIcon[] images = {
+    new ImageIcon("resources/Water.png"),
+    new ImageIcon("resources/LilyPad.png"),
+    new ImageIcon("resources/GreenFrog.png"),
+    new ImageIcon("resources/GreenFrog2.png"),
+    new ImageIcon("resources/RedFrog.png"),
+    new ImageIcon("resources/RedFrog2.png")
+    };
+
+
+
+    /**
+    * squaretype represents the image: 0 = water,
+    * 1 = pad, 2 = greenfrog, 3 = greenfrog2,
+    * 4 = redfrog, 5 = redfrog2
+    */
+    private int squareType = 0;
+    public Square(int x, int y, int type)
     {
         this.x = x;
         this.y = y;
-        //setImage(opt);
+        squareType = type;
     }
-/*
-    public void setImage(String opt)
+
+    /**
+    * Changes image value
+    * @param opt value can only be 0-3 inclusive
+    */
+    public void setImage(int opt)
     {
-        switch (opt){
-            case "greenfrog": image = new ImageIcon("resources/GreenFrog.png"));
-                greenFrog = true
-            break;
-            case "redfrog": image = ImageIcon("resources/RedFrog.png"));
-            break;
-            case "pad": image = ImageIcon("resources/LilyPad.png"));
-            break;
-            default: image = ImageIcon("resources/Water.png"));
-        }
+        squareType = opt;
     }
-*/
+
+    /**
+    * Returns image
+    */
+    public ImageIcon getImage()
+    {
+        return images[squareType];
+    }
+
     public int getX()
     {
         return x;
