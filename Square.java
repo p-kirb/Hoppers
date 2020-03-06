@@ -19,12 +19,18 @@ public class Square
     * 1 = pad, 2 = greenfrog, 3 = greenfrog2,
     * 4 = redfrog, 5 = redfrog2
     */
-    private int squareType = 0;
+    private int imageValue;
     public Square(int x, int y, int type)
     {
         this.x = x;
         this.y = y;
-        squareType = type;
+        imageValue = type;
+    }
+
+
+    public void moveTo(Square alt)
+    {
+
     }
 
     /**
@@ -33,7 +39,7 @@ public class Square
     */
     public void setImage(int opt)
     {
-        squareType = opt;
+        imageValue = opt;
     }
 
     /**
@@ -41,7 +47,12 @@ public class Square
     */
     public ImageIcon getImage()
     {
-        return images[squareType];
+        return images[imageValue];
+    }
+
+    public int getImageValue()
+    {
+        return imageValue;
     }
 
     public int getX()
