@@ -12,8 +12,6 @@ public class Square
     new ImageIcon("resources/RedFrog2.png")
     };
 
-
-
     /**
     * squaretype represents the image: 0 = water,
     * 1 = pad, 2 = greenfrog, 3 = greenfrog2,
@@ -30,7 +28,9 @@ public class Square
 
     public void moveTo(Square alt)
     {
-
+        int temp = alt.getImageValue();
+        alt.setImage(this.imageValue);
+        this.setImage(temp);
     }
 
     /**

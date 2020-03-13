@@ -34,18 +34,15 @@ public class Board implements ActionListener
                 panel.add(buttons[x][y]);
             }
         }
-
         changeImage(1,1,2);
         changeImage(3,1,2);
         changeImage(2,2,2);
         changeImage(0,4,2);
         changeImage(2,4,4);
         changeImage(4,4,2);
-
         frame.setContentPane(panel);
         frame.setVisible(true);
     }
-
 
     /**
     *method changes square object and its button representation
@@ -56,23 +53,44 @@ public class Board implements ActionListener
         buttons[x][y].setIcon(squares[x][y].getImage());
     }
 
+    /**
+    *loops through buttons array and sets the icon to the icon of the image
+    */
+    public void update(){
+        for (int y = 0; y < 5; y++)
+        {
+            for (int x = 0; x < 5; x++)
+            {
+                buttons[x][y].setIcon(squares[x][y].getImage());
+            }
+        }
+    }
+
     public void actionPerformed(ActionEvent e)
     {
+        //System.out.println(selected.getX()+ ","+ selected.getY());
         for (int y = 0; y < 5; y++)
         {
             for (int x = 0; x < 5; x++)
             {
                 if(e.getSource() == buttons[x][y]){
-                    if (selected == null){
-                        selected = squares[x][y];
+                    if (squares[x][y].getImageValue() == 0){
                         return;
                     }
-
+                    if (selected == null){
+                        if(squares[x][y].getImageValue() == 1){
+                            return;
+                        }
+                        selected = squares[x][y];
+                        selected.setImage(selected.getImageValue()+1);
+                        update();
+                        return;
+                    }
                     //swaps values
-                    int temp = squares[x][y].getImageValue();
-                    changeImage(x, y, selected.getImageValue());
-                    changeImage(selected.getX(), selected.getY(), temp);
+                    selected.setImage(selected.getImageValue()-1);
+                    selected.moveTo(squares[x][y]);
                     selected = null;
+                    update();
                     return;
                 }
             }
