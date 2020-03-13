@@ -55,26 +55,50 @@ public class Board implements ActionListener
 
     /**
     *loops through buttons array and sets the icon to the icon of the image
+    *and also displays win if game is won
     */
     public void update(){
+        boolean green = false;
         for (int y = 0; y < 5; y++)
         {
             for (int x = 0; x < 5; x++)
             {
                 buttons[x][y].setIcon(squares[x][y].getImage());
+                if (squares[x][y].getImageValue() == 2){green = true;}
             }
         }
+        if (!green){
+            JOptionPane.showMessageDialog(frame, "You won!");
+            }
+    }
+
+    /**
+    *removes the frog found in between the jumping frog and the target
+    *@return true if a green frog has been jumped (i.e. valid move made), false otherwise
+    */
+    public boolean removeJumped(Square sq1, Square sq2){
+        int avgX = (sq1.getX() + sq2.getX()) / 2;
+        int avgY = (sq1.getY() + sq2.getY()) / 2;
+        if (squares[avgX][avgY].getImageValue() == 2){
+            changeImage(avgX, avgY, 1);
+            return true;
+        }
+        return false;
     }
 
     public void actionPerformed(ActionEvent e)
     {
-        //System.out.println(selected.getX()+ ","+ selected.getY());
         for (int y = 0; y < 5; y++)
         {
             for (int x = 0; x < 5; x++)
             {
                 if(e.getSource() == buttons[x][y]){
                     if (squares[x][y].getImageValue() == 0){
+                        if (selected != null){
+                            selected.setImage(selected.getImageValue()-1);
+                            selected = null;
+                            update();
+                        }
                         return;
                     }
                     if (selected == null){
@@ -87,13 +111,16 @@ public class Board implements ActionListener
                         return;
                     }
                     //swaps values
-                    selected.setImage(selected.getImageValue()-1);
-                    selected.moveTo(squares[x][y]);
-                    selected = null;
+                    if(removeJumped(squares[x][y], selected)){
+                        selected.setImage(selected.getImageValue()-1);
+                        selected.moveTo(squares[x][y]);
+                        selected = null;
+                    }
                     update();
                     return;
                 }
             }
         }
     }
+
 }

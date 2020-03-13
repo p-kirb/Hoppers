@@ -12,12 +12,12 @@ public class Square
     new ImageIcon("resources/RedFrog2.png")
     };
 
+    private int imageValue;
     /**
-    * squaretype represents the image: 0 = water,
+    * @param type represents the image: 0 = water,
     * 1 = pad, 2 = greenfrog, 3 = greenfrog2,
     * 4 = redfrog, 5 = redfrog2
     */
-    private int imageValue;
     public Square(int x, int y, int type)
     {
         this.x = x;
@@ -25,7 +25,9 @@ public class Square
         imageValue = type;
     }
 
-
+    /**
+    * @param alt the square that is being jumped to
+    */
     public void moveTo(Square alt)
     {
         int temp = alt.getImageValue();
@@ -35,7 +37,7 @@ public class Square
 
     /**
     * Changes image value
-    * @param opt value can only be 0-3 inclusive
+    * @param opt value can only be 0-5 inclusive
     */
     public void setImage(int opt)
     {
@@ -43,7 +45,7 @@ public class Square
     }
 
     /**
-    * Returns image
+    *@return image that square object is representing
     */
     public ImageIcon getImage()
     {
