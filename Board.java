@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.util.Date;
 
 public class Board implements ActionListener
 {
@@ -10,11 +12,13 @@ public class Board implements ActionListener
     JFrame frame;
     JPanel panel;
     Square selected;
-
-    public Board()
+    Date start;
+    Date end;
+    
+    public Board(int levelNo)
     {
         grid = new GridLayout(5, 5);
-        frame = new JFrame("Hoppers");
+        frame = new JFrame("Hoppers - Level " + levelNo);
         panel = new JPanel();
         frame.setSize(760, 760);
         frame.setResizable(false);
@@ -23,25 +27,41 @@ public class Board implements ActionListener
         squares = new Square[5][5];
         buttons = new JButton[5][5];
 
-        for (int y = 0; y < 5; y++)
-        {
-            for (int x = 0; x < 5; x++)
-            {
-                squares[x][y] = new Square(x, y, ((5*y)+x+1)%2);
-                buttons[x][y] = new JButton(squares[x][y].getImage());
-                buttons[x][y].setIcon(squares[x][y].getImage());
-                buttons[x][y].addActionListener(this);
-                panel.add(buttons[x][y]);
+        //had to be in a try catch block because otherwise
+        //errors when compiling saying Exceptions need to be
+        //caught
+        char[] level = new char[13];
+        String line = "init";
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader("resources/levels.txt"));
+            for (int i = 0; i < levelNo; i++){  //reads each line into buffer "line" variable
+                line = reader.readLine();       //stops when levelNo is reached
             }
+            level = line.toCharArray();
         }
-        changeImage(1,1,2);
-        changeImage(3,1,2);
-        changeImage(2,2,2);
-        changeImage(0,4,2);
-        changeImage(2,4,4);
-        changeImage(4,4,2);
+        catch(Exception e){
+        }
+        int count = 0;
+        int x, y;
+        for (int i = 0; i < 25; i++)
+        {
+            x = i%5;
+            y = (i/5);
+            if(i%2==0){
+                squares[x][y] = new Square(x, y, (Character.getNumericValue(level[count])));
+                count++;
+            }
+            else{
+                squares[x][y] = new Square(x, y, 0);
+            }
+            buttons[x][y] = new JButton(squares[x][y].getImage());
+            buttons[x][y].setIcon(squares[x][y].getImage());
+            buttons[x][y].addActionListener(this);
+            panel.add(buttons[x][y]);
+        }
         frame.setContentPane(panel);
         frame.setVisible(true);
+        start = new Date();
     }
 
     /**
@@ -68,7 +88,10 @@ public class Board implements ActionListener
             }
         }
         if (!green){
-            JOptionPane.showMessageDialog(frame, "You won!");
+            end = new Date();
+            long time = (end.getTime() - start.getTime()) / 1000;
+            String message = "You won! It took you " + time + " seconds.";
+            JOptionPane.showMessageDialog(frame, message);
             }
     }
 
